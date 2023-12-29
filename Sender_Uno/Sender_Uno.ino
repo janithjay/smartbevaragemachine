@@ -48,9 +48,9 @@ void menu2() {
   lcd1.clear();
   lcd1.setCursor(0,0);
   lcd1.print("-Select Drink Size-");
-  lcd1.setCursor(0,1);
+  lcd1.setCursor(5,2);
   lcd1.print("1.Half Cup");
-  lcd1.setCursor(0,2);
+  lcd1.setCursor(5,3);
   lcd1.print("2.Full Cup");
 }
 
@@ -120,22 +120,22 @@ bool processInput(char option1, char option2, char option3) {
     if (state == WAIT_FOR_INPUT_MENU1) {
       if (key == option1) {
         lcd1.clear();
-        lcd1.setCursor(0,0);
-        lcd1.print("You choose Coffee");
+        lcd1.setCursor(0,1);
+        lcd1.print("You Choose Coffee");
         selectedDrinkType = 'A'; // Assume user selected drink type A
         delay(2000);
         name = "Coffee";
       } else if (key == option2) {
         lcd1.clear();
-        lcd1.setCursor(0,0);
-        lcd1.print("You choose Milk");
+        lcd1.setCursor(0,1);
+        lcd1.print("You Choose Milk");
         selectedDrinkType = 'B'; // Assume user selected drink type B
         delay(2000);
         name = "Milk";
       } else if (key == option3) {
         lcd1.clear();
-        lcd1.setCursor(0,0);
-        lcd1.print("You choose Plain Tea ");
+        lcd1.setCursor(0,1);
+        lcd1.print("You Choose Plain Tea ");
         selectedDrinkType = 'C'; // Assume user selected drink type C
         delay(2000);
         name = "Plain Tea";
@@ -152,26 +152,26 @@ bool processInput(char option1, char option2, char option3) {
     } else if (state == WAIT_FOR_INPUT_MENU2) {
       if (key == '1') {
         lcd1.clear();
-        lcd1.setCursor(0,1);
+        lcd1.setCursor(0,0);
         lcd1.print("-----Drink Size-----");
-        lcd1.setCursor(0,3);
+        lcd1.setCursor(0,2);
         lcd1.print("      Half Cup      ");
         size = "Half Cup";
         selectedSize = 1; // Assume user selected size 1
         delay(2000);
       } else if (key == '2') {
         lcd1.clear();
-        lcd1.setCursor(0,1);
+        lcd1.setCursor(0,0);
         lcd1.print("-----Drink Size-----");
-        lcd1.setCursor(0,3);
+        lcd1.setCursor(0,2);
         lcd1.print("      Full Cup      ");
         size = "Full Cup";
         selectedSize = 2; // Assume user selected size 2
         delay(2000);
       } else {
         lcd1.clear();
-        lcd1.setCursor(0,1);
-        
+        lcd1.setCursor(0,0);
+        lcd1.print("--Invalid Choice !--");
         lcd1.setCursor(0,2);
         lcd1.print("Select Option Again");
         delay(2000);
@@ -184,10 +184,11 @@ bool processInput(char option1, char option2, char option3) {
     if(state == WAIT_FOR_INPUT_MENU2){
       lcd1.clear();
       lcd1.setCursor(0,0);
-      lcd1.print("Preparing ");
+      lcd1.print("----Order Placed----");
+      lcd1.setCursor(0,2);
       lcd1.print(size);
-      lcd1.setCursor(0,1);
-      lcd1.print("Of ");
+      lcd1.print(" Of ");
+      lcd1.setCursor(0,3);
       lcd1.print(name);
       delay(5000);
       
@@ -200,14 +201,14 @@ bool processInput(char option1, char option2, char option3) {
       lcd1.clear();
       lcd1.setCursor(0,0);
       lcd1.print("Your Order Number");
-      lcd1.setCursor(0,1);
+      lcd1.setCursor(0,2);
       lcd1.print(uniqueOrderNum);
       Serial.print(uniqueOrderNum);
 
       delay(10000); // Delay for demonstration purposes
 
       lcd1.setCursor(0,3);
-      lcd1.print("Next Customer plz!");
+      lcd1.print("Next Customer Plz!");
       delay(5000);
     }
     state = (state == WAIT_FOR_INPUT_MENU2) ? DISPLAY_MENU2 : DISPLAY_MENU1;
