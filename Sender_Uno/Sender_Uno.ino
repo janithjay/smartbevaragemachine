@@ -48,9 +48,9 @@ void menu2() {
   lcd1.clear();
   lcd1.setCursor(0,0);
   lcd1.print("-Select Drink Size-");
-  lcd1.setCursor(5,2);
+  lcd1.setCursor(0,1);
   lcd1.print("1.Half Cup");
-  lcd1.setCursor(5,3);
+  lcd1.setCursor(0,2);
   lcd1.print("2.Full Cup");
 }
 
