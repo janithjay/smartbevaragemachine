@@ -6,8 +6,8 @@ void setup() {
 
 void loop() {
   if(Serial.available()>0){
-    char data = Serial.read();
-    Serial.print(data);
+    char uniqueOrderNum = Serial.read();
+    Serial.print(uniqueOrderNum);
   }
  
 }
