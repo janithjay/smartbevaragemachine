@@ -34,7 +34,7 @@ void loop() {
 
   if (client.connected()) {
     while (client.available()) {
-      String receivedData = client.readStringUntil('\r'); // Read the received string until newline character
+      String receivedData = client.readStringUntil('\n'); // Read the received string until newline character
 
       Serial.print("Received Order Number: ");
       Serial.println(receivedData);
