@@ -39,6 +39,7 @@ void loop() {
       Serial.print("Received Order Number: ");
       Serial.println(receivedData);
       // Process or use the received order number as needed
+      Serial1.println(receivedData); // Assumes ESP8266 has Serial1 as a hardware serial port
     }
   }
 }
