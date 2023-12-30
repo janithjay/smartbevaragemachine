@@ -50,6 +50,13 @@ void setup() {
 }
 
 void loop() {
+  if (Serial.available()) {
+    String receivedData = Serial.readStringUntil('\n'); // Read the received string until newline character
+
+    Serial.print("Received Order Number from ESP8266: ");
+    Serial.println(receivedData);
+  }
+
   static bool orderEntered = false;
   static String orderNumber = "";
 
