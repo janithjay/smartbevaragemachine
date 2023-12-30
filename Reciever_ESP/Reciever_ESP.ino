@@ -32,10 +32,13 @@ void loop() {
     }
   }
 
-  if (client.connected() && Serial.available() > 0) {
-    char uniqueOrderNum = Serial.read();
-    Serial.print("Received Order Number: ");
-    Serial.println(uniqueOrderNum);
-    // Process or use the received order number as needed
+  if (client.connected()) {
+    while (client.available()) {
+      String receivedData = client.readStringUntil('\r'); // Read the received string until newline character
+
+      Serial.print("Received Order Number: ");
+      Serial.println(receivedData);
+      // Process or use the received order number as needed
+    }
   }
 }
