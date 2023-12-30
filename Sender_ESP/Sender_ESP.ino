@@ -25,23 +25,28 @@ void loop() {
 
   WiFiClient client = server.available(); // Check for incoming clients
 
-  if (Serial.available() > 0) {
-        char uniqueOrderNum = Serial.read();
-        orderNumberString += String(uniqueOrderNum); // Append the character to the orderNumberString
-        Serial.print("Sending Order Number: ");
-        Serial.println(orderNumberString);
-  }
+    if (client) {
+      while (client.connected()) {
+        if (Serial.available() > 0) {
+          String orderNumberString; // Initialize an empty string for the order number
 
-  if (client) {
-    while (client.connected()) {
-      if (Serial.available() > 0) {
-        char uniqueOrderNum = Serial.read();
-        Serial.print("Sending Order Number: ");
-        Serial.println(uniqueOrderNum);
-        client.write(uniqueOrderNum); // Send the order number to the client
+          // Read the entire order number from Serial
+          while (Serial.available() > 0) {
+            char uniqueOrderNum = Serial.read();
+            orderNumberString += uniqueOrderNum; // Append the character to the orderNumberString
+          }
+
+          Serial.print("Sending Order Number: ");
+          Serial.println(orderNumberString);
+          
+          // Send the order number to the client
+          client.print(orderNumberString);
+
+          // Optionally, add a delay or logic to avoid spamming the client
+          delay(1000);
+        }
       }
+      client.stop();
+      Serial.println("Client disconnected");
     }
-    client.stop();
-    Serial.println("Client disconnected");
-  }
   }
