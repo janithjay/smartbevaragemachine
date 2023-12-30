@@ -182,6 +182,13 @@ bool processInput(char option1, char option2, char option3) {
 
     
     if(state == WAIT_FOR_INPUT_MENU2){
+      // Generate a unique order number based on the selected drink type and size
+      unsigned long timestamp = millis(); // Get current timestamp in milliseconds
+      
+      // Create a unique order number by combining timestamp, drink type, and size
+      String uniqueOrderNum = (selectedDrinkType) + String(selectedSize) + String(timestamp);
+      Serial.print(uniqueOrderNum);
+
       lcd1.clear();
       lcd1.setCursor(0,0);
       lcd1.print("----Order Placed----");
@@ -190,20 +197,14 @@ bool processInput(char option1, char option2, char option3) {
       lcd1.print(" Of ");
       lcd1.setCursor(0,3);
       lcd1.print(name);
+      
       delay(5000);
-      
-      // Generate a unique order number based on the selected drink type and size
-      unsigned long timestamp = millis(); // Get current timestamp in milliseconds
-      
-      // Create a unique order number by combining timestamp, drink type, and size
-      String uniqueOrderNum = (selectedDrinkType) + String(selectedSize) + String(timestamp);
-
       lcd1.clear();
       lcd1.setCursor(0,0);
       lcd1.print("Your Order Number");
       lcd1.setCursor(0,2);
       lcd1.print(uniqueOrderNum);
-      Serial.print(uniqueOrderNum);
+     
 
       delay(10000); // Delay for demonstration purposes
 
