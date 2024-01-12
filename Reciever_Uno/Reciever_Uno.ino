@@ -29,6 +29,78 @@ const int relayPinA = 11; // Relay connected to pin 11
 const int relayPinB = 12; // Relay connected to pin 12
 const int relayPinC = 13; // Relay connected to pin 13
 
+// Define the structure for a node in the linked list
+struct Node {
+  String data; // Data field (order number in this case)
+  Node* next; // Pointer to the next node
+};
+
+Node* head = nullptr; // Head pointer to the linked list
+
+// Function to add a new order number to the linked list
+void addOrder(String orderNumber) {
+  Node* newNode = new Node(); // Create a new node
+  newNode->data = orderNumber; // Set the data of the node
+  newNode->next = nullptr; // Initialize next pointer
+  
+  if (head == nullptr) {
+    head = newNode; // If list is empty, make the new node as head
+  } else {
+    // Traverse the list to find the last node
+    Node* lastNode = head;
+    while (lastNode->next != nullptr) {
+      lastNode = lastNode->next;
+    }
+    // Append the new node at the end of the list
+    lastNode->next = newNode;
+  }
+}
+
+// Function to check if the order number is valid (exists in the list)
+bool isOrderNumberValid(String orderToCheck) {
+  Node* current = head;
+  while (current != nullptr) {
+    if (current->data == orderToCheck) {
+      return true; // Order number found in the list
+    }
+    current = current->next;
+  }
+  return false; // Order number not found in the list
+}
+
+// Function to remove the matched order number from the linked list
+void removeOrder(String orderToRemove) {
+  Node* current = head;
+  Node* prev = nullptr;
+
+  while (current != nullptr) {
+    if (current->data == orderToRemove) {
+      if (prev == nullptr) {
+        // If the matched order is the head node
+        head = current->next;
+        delete current; // Delete the node
+        return;
+      } else {
+        prev->next = current->next;
+        delete current; // Delete the node
+        return;
+      }
+    }
+    prev = current;
+    current = current->next;
+  }
+}
+
+
+// Function to display all order numbers stored in the linked list
+void displayOrders() {
+  Node* current = head;
+  while (current != nullptr) {
+    Serial.println(current->data);
+    current = current->next;
+  }
+}
+
 void setup() {
   // Initialize the LCD
   lcd.init();
@@ -53,8 +125,13 @@ void loop() {
   if (Serial.available()) {
     String receivedData = Serial.readStringUntil('\n'); // Read the received string until newline character
 
-    Serial.print("Received Order Number from ESP8266: ");
     Serial.println(receivedData);
+
+    // Add the received order number to the linked list
+    addOrder(receivedData);
+    // Display all orders (for demonstration purposes)
+  displayOrders();
+  delay(1000); // Adjust delay as needed
   }
 
   static bool orderEntered = false;
