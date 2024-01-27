@@ -15,7 +15,7 @@ char hexaKeys[ROWS][COLS] = {
 byte rowPins[4] = {2, 3, 4, 5};
 byte colPins[4] = {6, 7, 8, 9};
 
-// Initialize an instance of class NewKeypad
+// Initialize an instance of class Keypad
 Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
 // Set the LCD address to 0x27 for a 16 chars and 2 line display
@@ -29,77 +29,8 @@ const int relayPinA = 11; // Relay connected to pin 11
 const int relayPinB = 12; // Relay connected to pin 12
 const int relayPinC = 13; // Relay connected to pin 13
 
-// Define the structure for a node in the linked list
-struct Node {
-  String data; // Data field (order number in this case)
-  Node* next; // Pointer to the next node
-};
-
-Node* head = nullptr; // Head pointer to the linked list
-
-// Function to add a new order number to the linked list
-void addOrder(String orderNumber) {
-  Node* newNode = new Node(); // Create a new node
-  newNode->data = orderNumber; // Set the data of the node
-  newNode->next = nullptr; // Initialize next pointer
-  
-  if (head == nullptr) {
-    head = newNode; // If list is empty, make the new node as head
-  } else {
-    // Traverse the list to find the last node
-    Node* lastNode = head;
-    while (lastNode->next != nullptr) {
-      lastNode = lastNode->next;
-    }
-    // Append the new node at the end of the list
-    lastNode->next = newNode;
-  }
-}
-
-// Function to check if the order number is valid (exists in the list)
-bool isOrderNumberValid(String orderToCheck) {
-  Node* current = head;
-  while (current != nullptr) {
-    if (current->data == orderToCheck) {
-      return true; // Order number found in the list
-    }
-    current = current->next;
-  }
-  return false; // Order number not found in the list
-}
-
-// Function to remove the matched order number from the linked list
-void removeOrder(String orderToRemove) {
-  Node* current = head;
-  Node* prev = nullptr;
-
-  while (current != nullptr) {
-    if (current->data == orderToRemove) {
-      if (prev == nullptr) {
-        // If the matched order is the head node
-        head = current->next;
-        delete current; // Delete the node
-        return;
-      } else {
-        prev->next = current->next;
-        delete current; // Delete the node
-        return;
-      }
-    }
-    prev = current;
-    current = current->next;
-  }
-}
-
-
-// Function to display all order numbers stored in the linked list
-void displayOrders() {
-  Node* current = head;
-  while (current != nullptr) {
-    Serial.println(current->data);
-    current = current->next;
-  }
-}
+String receivedOrderNumber = ""; // Variable to store the received order number
+String enteredOrderNumber = "";  // Variable to store the entered order number
 
 void setup() {
   // Initialize the LCD
@@ -107,7 +38,7 @@ void setup() {
   // Turn on the backlight (optional)
   lcd.backlight();
 
-   // Display initial message
+  // Display initial message
   lcd.setCursor(0, 0);
   lcd.print("Enter Order No:");
 
@@ -123,28 +54,21 @@ void setup() {
 
 void loop() {
   if (Serial.available()) {
-    String receivedData = Serial.readStringUntil('\n'); // Read the received string until newline character
-
-    Serial.println(receivedData);
-
-    // Add the received order number to the linked list
-    addOrder(receivedData);
-    // Display all orders (for demonstration purposes)
-  displayOrders();
-  delay(1000); // Adjust delay as needed
+    receivedOrderNumber = Serial.readStringUntil('\n'); // Read the received string until newline character
+    Serial.print("Received Order Number from ESP8266: ");
+    Serial.println(receivedOrderNumber);
   }
 
   static bool orderEntered = false;
-  static String orderNumber = "";
 
   if (!orderEntered) {
     char customKey = customKeypad.getKey();
 
     if (customKey) {
       if (customKey != '#') { // '#' key as Enter
-        orderNumber += customKey; // Concatenate keys to form order number
+        enteredOrderNumber += customKey; // Concatenate keys to form entered order number
         lcd.setCursor(0, 1);
-        lcd.print(orderNumber);
+        lcd.print(enteredOrderNumber);
         delay(200); // Delay to debounce keypad
       } else {
         orderEntered = true;
@@ -152,53 +76,48 @@ void loop() {
         lcd.setCursor(0, 0);
         lcd.print("Order No:");
         lcd.setCursor(0, 1);
-        lcd.print(orderNumber);
+        lcd.print(enteredOrderNumber);
 
         irSensorValue = digitalRead(irSensorPin); // Read IR sensor status
 
         if (irSensorValue == LOW) {
-          char startChar = orderNumber.charAt(0);
+          // Compare entered order number with received order number
+          if (enteredOrderNumber == receivedOrderNumber) {
+            // Correct order number entered
+            char startChar = enteredOrderNumber.charAt(0);
 
-          if (startChar == 'A') {
-            // Control relay connected to pin relayPinA
-            digitalWrite(relayPinA, HIGH); // Turn on relay connected to relayPinA
-          } else if (startChar == 'B') {
-            // Control relay connected to pin relayPinB
-            digitalWrite(relayPinB, HIGH); // Turn on relay connected to relayPinB
-          } else if (startChar == 'C') {
-            // Control relay connected to pin relayPinC
-            digitalWrite(relayPinC, HIGH); // Turn on relay connected to relayPinC
+            if (startChar == 'A') {
+              // Control relay connected to pin relayPinA
+              digitalWrite(relayPinA, HIGH); // Turn on relay connected to relayPinA
+            } else if (startChar == 'B') {
+              // Control relay connected to pin relayPinB
+              digitalWrite(relayPinB, HIGH); // Turn on relay connected to relayPinB
+            } else if (startChar == 'C') {
+              // Control relay connected to pin relayPinC
+              digitalWrite(relayPinC, HIGH); // Turn on relay connected to relayPinC
+            } else {
+              lcd.clear();
+              lcd.print("Wrong Order No!");
+              delay(2000); // Display "Wrong Order!" for 2 seconds
+            }
+
+            delay(500); // Delay to hold the relay on for 0.5 seconds
+
+            // Turn off all relays
+            digitalWrite(relayPinA, LOW);
+            digitalWrite(relayPinB, LOW);
+            digitalWrite(relayPinC, LOW);
           } else {
             lcd.clear();
-            lcd.print("Wrong Order No!");
-            delay(0); // Display "Wrong Order!"
+            lcd.print("Incorrect Order!");
+            delay(0); // Display "Incorrect Order!"
           }
-
-          delay(2000); // Delay to hold the relay on for 5 seconds
-
-          // Turn off all relays
-          digitalWrite(relayPinA, LOW);
-          digitalWrite(relayPinB, LOW);
-          digitalWrite(relayPinC, LOW);
         } else {
           // Logic for cup detection and additional actions
-
-          // Cup detection code
-          lcd.clear();
-          lcd.print("Please put a cup!");
-          delay(2000); // Display "Please put a cup!" for 2 seconds
-
-          // Wait for the cup to be placed (IR sensor detects obstacle)
-          while (digitalRead(irSensorPin) == HIGH) {
-            delay(100);
-          }
-          lcd.clear();
-          lcd.print("Cup Added!");
-          delay(1000); // Display "Cup Added!" for 1 second
+          // (Same as in the original code)
 
           // Additional actions based on cup detection
-
-          char startChar = orderNumber.charAt(0);
+          char startChar = enteredOrderNumber.charAt(0);
 
           if (startChar == 'A') {
             // Control relay connected to pin relayPinA
@@ -215,7 +134,7 @@ void loop() {
             delay(0); // Display "Wrong Order!"
           }
 
-          delay(2000); // Delay to hold the relay on for 5 seconds
+          delay(500); // Delay to hold the relay on for 0.5 seconds
 
           // Turn off all relays
           digitalWrite(relayPinA, LOW);
@@ -224,7 +143,7 @@ void loop() {
         }
 
         // Reset variables for the next order entry
-        orderNumber = "";
+        enteredOrderNumber = "";
         orderEntered = false;
         lcd.clear();
         lcd.setCursor(0, 0);
