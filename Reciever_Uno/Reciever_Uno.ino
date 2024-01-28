@@ -55,7 +55,7 @@ void setup() {
 void loop() {
   if (Serial.available()) {
     receivedOrderNumber = Serial.readStringUntil('\n'); // Read the received string until newline character
-    Serial.print("Received Order Number from ESP8266: ");
+    receivedOrderNumber.trim(); // Remove leading and trailing whitespaces
     Serial.println(receivedOrderNumber);
   }
 
@@ -65,7 +65,15 @@ void loop() {
     char customKey = customKeypad.getKey();
 
     if (customKey) {
-      if (customKey != '#') { // '#' key as Enter
+      if (customKey == '*') { // '*' key for backspace
+        if (enteredOrderNumber.length() > 0) {
+          enteredOrderNumber.remove(enteredOrderNumber.length() - 1);
+          lcd.setCursor(0, 1);
+          lcd.print("                "); // Clear the line
+          lcd.setCursor(0, 1);
+          lcd.print(enteredOrderNumber);
+        }
+      } else if (customKey != '#') { // '#' key as Enter
         enteredOrderNumber += customKey; // Concatenate keys to form entered order number
         lcd.setCursor(0, 1);
         lcd.print(enteredOrderNumber);
@@ -78,11 +86,15 @@ void loop() {
         lcd.setCursor(0, 1);
         lcd.print(enteredOrderNumber);
 
-        irSensorValue = digitalRead(irSensorPin); // Read IR sensor status
+        enteredOrderNumber.trim();
 
-        if (irSensorValue == LOW) {
-          // Compare entered order number with received order number
-          if (enteredOrderNumber == receivedOrderNumber) {
+        // Compare entered order number with received order number
+        if(enteredOrderNumber == receivedOrderNumber){
+
+          irSensorValue = digitalRead(irSensorPin); // Read IR sensor status
+
+          if (irSensorValue == LOW) {
+          
             // Correct order number entered
             char startChar = enteredOrderNumber.charAt(0);
 
@@ -96,9 +108,9 @@ void loop() {
               // Control relay connected to pin relayPinC
               digitalWrite(relayPinC, HIGH); // Turn on relay connected to relayPinC
             } else {
-              lcd.clear();
-              lcd.print("Wrong Order No!");
-              delay(2000); // Display "Wrong Order!" for 2 seconds
+            lcd.clear();
+            lcd.print("Wrong Order No!");
+            delay(1500); // Display "Wrong Order!" for 2 seconds
             }
 
             delay(500); // Delay to hold the relay on for 0.5 seconds
@@ -107,41 +119,58 @@ void loop() {
             digitalWrite(relayPinA, LOW);
             digitalWrite(relayPinB, LOW);
             digitalWrite(relayPinC, LOW);
+
+            receivedOrderNumber = "";
+
           } else {
-            lcd.clear();
-            lcd.print("Incorrect Order!");
-            delay(0); // Display "Incorrect Order!"
-          }
-        } else {
           // Logic for cup detection and additional actions
-          // (Same as in the original code)
+          // Cup detection code
+          lcd.clear();
+          lcd.print("Please put a cup!");
+          delay(2000); // Display "Please put a cup!" for 2 seconds
+
+          // Wait for the cup to be placed (IR sensor detects obstacle)
+          while (digitalRead(irSensorPin) == HIGH) {
+            delay(100);
+          }
+          lcd.clear();
+          lcd.print("Cup Added!");
+          delay(1000); // Display "Cup Added!" for 1 second
 
           // Additional actions based on cup detection
           char startChar = enteredOrderNumber.charAt(0);
 
-          if (startChar == 'A') {
-            // Control relay connected to pin relayPinA
-            digitalWrite(relayPinA, HIGH); // Turn on relay connected to relayPinA
-          } else if (startChar == 'B') {
-            // Control relay connected to pin relayPinB
-            digitalWrite(relayPinB, HIGH); // Turn on relay connected to relayPinB
-          } else if (startChar == 'C') {
-            // Control relay connected to pin relayPinC
-            digitalWrite(relayPinC, HIGH); // Turn on relay connected to relayPinC
-          } else {
+            if (startChar == 'A') {
+              // Control relay connected to pin relayPinA
+              digitalWrite(relayPinA, HIGH); // Turn on relay connected to relayPinA
+            } else if (startChar == 'B') {
+              // Control relay connected to pin relayPinB
+              digitalWrite(relayPinB, HIGH); // Turn on relay connected to relayPinB
+            } else if (startChar == 'C') {
+              // Control relay connected to pin relayPinC
+              digitalWrite(relayPinC, HIGH); // Turn on relay connected to relayPinC
+            } else {
             lcd.clear();
             lcd.print("Wrong Order No!");
-            delay(0); // Display "Wrong Order!"
+            delay(1500); // Display "Wrong Order!" for 2 seconds
+            }
+
+            delay(500); // Delay to hold the relay on for 0.5 seconds
+
+            // Turn off all relays
+            digitalWrite(relayPinA, LOW);
+            digitalWrite(relayPinB, LOW);
+            digitalWrite(relayPinC, LOW);
+
+            receivedOrderNumber = "";
           }
-
-          delay(500); // Delay to hold the relay on for 0.5 seconds
-
-          // Turn off all relays
-          digitalWrite(relayPinA, LOW);
-          digitalWrite(relayPinB, LOW);
-          digitalWrite(relayPinC, LOW);
+          
+        } else {
+            lcd.clear();
+            lcd.print("Wrong Order No!");
+            delay(1500); // Display "Wrong Order!" for 2 seconds
         }
-
+        
         // Reset variables for the next order entry
         enteredOrderNumber = "";
         orderEntered = false;
