@@ -37,7 +37,6 @@ void loop() {
       String receivedData = client.readStringUntil('\n'); // Read the received string until newline character
 
       Serial.println(receivedData);
-      // Process or use the received order number as needed
     }
   }
 }
