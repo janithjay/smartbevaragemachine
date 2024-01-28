@@ -96,29 +96,58 @@ void loop() {
           if (irSensorValue == LOW) {
           
             // Correct order number entered
-            char startChar = enteredOrderNumber.charAt(0);
+            char startChar = enteredOrderNumber.charAt(0); // Check the first character for drink type
+            char sizeChar = enteredOrderNumber.charAt(1); // Check the second character for drink size
 
-            if (startChar == 'A') {
-              // Control relay connected to pin relayPinA
-              digitalWrite(relayPinA, HIGH); // Turn on relay connected to relayPinA
-            } else if (startChar == 'B') {
-              // Control relay connected to pin relayPinB
-              digitalWrite(relayPinB, HIGH); // Turn on relay connected to relayPinB
-            } else if (startChar == 'C') {
-              // Control relay connected to pin relayPinC
-              digitalWrite(relayPinC, HIGH); // Turn on relay connected to relayPinC
-            } else {
-            lcd.clear();
-            lcd.print("Wrong Order No!");
-            delay(1500); // Display "Wrong Order!" for 2 seconds
-            }
+            switch (startChar) {
+              case 'A':
+                if (sizeChar == '1') {
+                  // Control relay connected to pin relayPinA for half cup
+                  digitalWrite(relayPinA, HIGH);
+                  delay(500);
+                  digitalWrite(relayPinA, LOW);
+                } else if (sizeChar == '2') {
+                  // Control relay connected to pin relayPinA for full cup
+                  digitalWrite(relayPinA, HIGH);
+                  delay(1000);
+                  digitalWrite(relayPinA, LOW);
+                }
+                break;
 
-            delay(500); // Delay to hold the relay on for 0.5 seconds
+              case 'B':
+                if (sizeChar == '1') {
+                  // Control relay connected to pin relayPinB for half cup
+                  digitalWrite(relayPinB, HIGH);
+                  delay(500);
+                  digitalWrite(relayPinB, LOW);
+                } else if (sizeChar == '2') {
+                  // Control relay connected to pin relayPinB for full cup
+                  digitalWrite(relayPinB, HIGH);
+                  delay(1000);
+                  digitalWrite(relayPinB, LOW);
+                }
+                break;
 
-            // Turn off all relays
-            digitalWrite(relayPinA, LOW);
-            digitalWrite(relayPinB, LOW);
-            digitalWrite(relayPinC, LOW);
+              case 'C':
+                if (sizeChar == '1') {
+                  // Control relay connected to pin relayPinC for half cup
+                  digitalWrite(relayPinC, HIGH);
+                  delay(500);
+                  digitalWrite(relayPinC, LOW);
+                } else if (sizeChar == '2') {
+                  // Control relay connected to pin relayPinC for full cup
+                  digitalWrite(relayPinC, HIGH);
+                  delay(1000);
+                  digitalWrite(relayPinC, LOW);
+                }
+                break;
+
+              default:
+                lcd.clear();
+                lcd.print("Wrong Order No!");
+                delay(1500); // Display "Wrong Order!" for 1.5 seconds
+                break;
+            } 
 
             receivedOrderNumber = "";
 
@@ -138,33 +167,62 @@ void loop() {
           delay(1000); // Display "Cup Added!" for 1 second
 
           // Additional actions based on cup detection
-          char startChar = enteredOrderNumber.charAt(0);
+          char startChar = enteredOrderNumber.charAt(0); // Check the first character for drink type
+          char sizeChar = enteredOrderNumber.charAt(1); // Check the second character for drink size
 
-            if (startChar == 'A') {
-              // Control relay connected to pin relayPinA
-              digitalWrite(relayPinA, HIGH); // Turn on relay connected to relayPinA
-            } else if (startChar == 'B') {
-              // Control relay connected to pin relayPinB
-              digitalWrite(relayPinB, HIGH); // Turn on relay connected to relayPinB
-            } else if (startChar == 'C') {
-              // Control relay connected to pin relayPinC
-              digitalWrite(relayPinC, HIGH); // Turn on relay connected to relayPinC
-            } else {
-            lcd.clear();
-            lcd.print("Wrong Order No!");
-            delay(1500); // Display "Wrong Order!" for 2 seconds
-            }
+            switch (startChar) {
+              case 'A':
+                if (sizeChar == '1') {
+                  // Control relay connected to pin relayPinA for half cup
+                  digitalWrite(relayPinA, HIGH);
+                  delay(500);
+                  digitalWrite(relayPinA, LOW);
+                } else if (sizeChar == '2') {
+                  // Control relay connected to pin relayPinA for full cup
+                  digitalWrite(relayPinA, HIGH);
+                  delay(1000);
+                  digitalWrite(relayPinA, LOW);
+                }
+                break;
 
-            delay(500); // Delay to hold the relay on for 0.5 seconds
+              case 'B':
+                if (sizeChar == '1') {
+                  // Control relay connected to pin relayPinB for half cup
+                  digitalWrite(relayPinB, HIGH);
+                  delay(500);
+                  digitalWrite(relayPinB, LOW);
+                } else if (sizeChar == '2') {
+                  // Control relay connected to pin relayPinB for full cup
+                  digitalWrite(relayPinB, HIGH);
+                  delay(1000);
+                  digitalWrite(relayPinB, LOW);
+                }
+                break;
 
-            // Turn off all relays
-            digitalWrite(relayPinA, LOW);
-            digitalWrite(relayPinB, LOW);
-            digitalWrite(relayPinC, LOW);
+              case 'C':
+                if (sizeChar == '1') {
+                  // Control relay connected to pin relayPinC for half cup
+                  digitalWrite(relayPinC, HIGH);
+                  delay(500);
+                  digitalWrite(relayPinC, LOW);
+                } else if (sizeChar == '2') {
+                  // Control relay connected to pin relayPinC for full cup
+                  digitalWrite(relayPinC, HIGH);
+                  delay(1000);
+                  digitalWrite(relayPinC, LOW);
+                }
+                break;
+
+              default:
+                lcd.clear();
+                lcd.print("Wrong Order No!");
+                delay(1500); // Display "Wrong Order!" for 1.5 seconds
+                break;
+            } 
 
             receivedOrderNumber = "";
           }
-          
+
         } else {
             lcd.clear();
             lcd.print("Wrong Order No!");
