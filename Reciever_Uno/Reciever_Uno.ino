@@ -104,12 +104,12 @@ void loop() {
                 if (sizeChar == '1') {
                   // Control relay connected to pin relayPinA for half cup
                   digitalWrite(relayPinA, HIGH);
-                  delay(500);
+                  delay(3000);
                   digitalWrite(relayPinA, LOW);
                 } else if (sizeChar == '2') {
                   // Control relay connected to pin relayPinA for full cup
                   digitalWrite(relayPinA, HIGH);
-                  delay(1000);
+                  delay(5000);
                   digitalWrite(relayPinA, LOW);
                 }
                 break;
@@ -118,12 +118,12 @@ void loop() {
                 if (sizeChar == '1') {
                   // Control relay connected to pin relayPinB for half cup
                   digitalWrite(relayPinB, HIGH);
-                  delay(500);
+                  delay(3000);
                   digitalWrite(relayPinB, LOW);
                 } else if (sizeChar == '2') {
                   // Control relay connected to pin relayPinB for full cup
                   digitalWrite(relayPinB, HIGH);
-                  delay(1000);
+                  delay(5000);
                   digitalWrite(relayPinB, LOW);
                 }
                 break;
@@ -132,12 +132,12 @@ void loop() {
                 if (sizeChar == '1') {
                   // Control relay connected to pin relayPinC for half cup
                   digitalWrite(relayPinC, HIGH);
-                  delay(500);
+                  delay(3000);
                   digitalWrite(relayPinC, LOW);
                 } else if (sizeChar == '2') {
                   // Control relay connected to pin relayPinC for full cup
                   digitalWrite(relayPinC, HIGH);
-                  delay(1000);
+                  delay(5000);
                   digitalWrite(relayPinC, LOW);
                 }
                 break;
@@ -175,12 +175,12 @@ void loop() {
                 if (sizeChar == '1') {
                   // Control relay connected to pin relayPinA for half cup
                   digitalWrite(relayPinA, HIGH);
-                  delay(500);
+                  delay(3000);
                   digitalWrite(relayPinA, LOW);
                 } else if (sizeChar == '2') {
                   // Control relay connected to pin relayPinA for full cup
                   digitalWrite(relayPinA, HIGH);
-                  delay(1000);
+                  delay(5000);
                   digitalWrite(relayPinA, LOW);
                 }
                 break;
@@ -189,12 +189,12 @@ void loop() {
                 if (sizeChar == '1') {
                   // Control relay connected to pin relayPinB for half cup
                   digitalWrite(relayPinB, HIGH);
-                  delay(500);
+                  delay(3000);
                   digitalWrite(relayPinB, LOW);
                 } else if (sizeChar == '2') {
                   // Control relay connected to pin relayPinB for full cup
                   digitalWrite(relayPinB, HIGH);
-                  delay(1000);
+                  delay(5000);
                   digitalWrite(relayPinB, LOW);
                 }
                 break;
@@ -203,12 +203,12 @@ void loop() {
                 if (sizeChar == '1') {
                   // Control relay connected to pin relayPinC for half cup
                   digitalWrite(relayPinC, HIGH);
-                  delay(500);
+                  delay(3000);
                   digitalWrite(relayPinC, LOW);
                 } else if (sizeChar == '2') {
                   // Control relay connected to pin relayPinC for full cup
                   digitalWrite(relayPinC, HIGH);
-                  delay(1000);
+                  delay(5000);
                   digitalWrite(relayPinC, LOW);
                 }
                 break;
