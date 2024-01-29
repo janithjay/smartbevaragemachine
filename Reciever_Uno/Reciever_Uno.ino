@@ -226,7 +226,7 @@ void loop() {
         } else {
             lcd.clear();
             lcd.print("Wrong Order No!");
-            delay(1500); // Display "Wrong Order!" for 2 seconds
+            delay(1500); // Display "Wrong Order!" for 1.5 seconds
         }
         
         // Reset variables for the next order entry
