@@ -34,11 +34,11 @@ void menu1() {
   lcd1.setCursor(0,0);
   lcd1.print("----Select Drink----");
   lcd1.setCursor(0,1);
-  lcd1.print("A. Coffee");
+  lcd1.print("A. Cream Soda");
   lcd1.setCursor(0,2);
-  lcd1.print("B. Milk");
+  lcd1.print("B. Fanta");
   lcd1.setCursor(0,3);
-  lcd1.print("C. Plain Tea");
+  lcd1.print("C. Portello");
 }
 
 void menu2() {
@@ -77,7 +77,7 @@ void setup() {
 
   randomSeed(analogRead(0));
 
-  // Turn on the backlight for both displays
+  // Turn on the backlight for displays
   lcd1.backlight();
   
 }
@@ -121,31 +121,33 @@ bool processInput(char option1, char option2, char option3) {
       if (key == option1) {
         lcd1.clear();
         lcd1.setCursor(0,1);
-        lcd1.print("You Choose Coffee");
+        lcd1.print("You Choose Cream");
+        lcd1.setCursor(0,2);
+        lcd1.print("Soda");
         selectedDrinkType = 'A'; // Assume user selected drink type A
-        delay(2000);
-        name = "Coffee";
+        delay(1500);
+        name = "Cream Soda";
       } else if (key == option2) {
         lcd1.clear();
         lcd1.setCursor(0,1);
-        lcd1.print("You Choose Milk");
+        lcd1.print("You Choose Fanta");
         selectedDrinkType = 'B'; // Assume user selected drink type B
-        delay(2000);
-        name = "Milk";
+        delay(1500);
+        name = "Fanta";
       } else if (key == option3) {
         lcd1.clear();
         lcd1.setCursor(0,1);
-        lcd1.print("You Choose Plain Tea ");
+        lcd1.print("You Choose Portello");
         selectedDrinkType = 'C'; // Assume user selected drink type C
-        delay(2000);
-        name = "Plain Tea";
+        delay(1500);
+        name = "Portello";
       } else {
         lcd1.clear();
         lcd1.setCursor(0,0);
         lcd1.print("--Invalid Choice !--");
         lcd1.setCursor(0,2);
         lcd1.print("Select Option Again");
-        delay(2000);
+        delay(1500);
         state = prevState;
         return false;
       }
@@ -158,7 +160,7 @@ bool processInput(char option1, char option2, char option3) {
         lcd1.print("      Half Cup      ");
         size = "Half Cup";
         selectedSize = 1; // Assume user selected size 1
-        delay(2000);
+        delay(1000);
       } else if (key == '2') {
         lcd1.clear();
         lcd1.setCursor(0,0);
@@ -167,21 +169,21 @@ bool processInput(char option1, char option2, char option3) {
         lcd1.print("      Full Cup      ");
         size = "Full Cup";
         selectedSize = 2; // Assume user selected size 2
-        delay(2000);
+        delay(1000);
       } else {
         lcd1.clear();
         lcd1.setCursor(0,0);
         lcd1.print("--Invalid Choice !--");
         lcd1.setCursor(0,2);
         lcd1.print("Select Option Again");
-        delay(2000);
+        delay(1000);
         state = prevState;
         return false;
       }
     }
 
     
-    if(state == WAIT_FOR_INPUT_MENU2){
+    if (state == WAIT_FOR_INPUT_MENU2) {
       // Generate a unique order number based on the selected drink type and size
       unsigned long timestamp = millis(); // Get current timestamp in milliseconds
       
@@ -195,10 +197,9 @@ bool processInput(char option1, char option2, char option3) {
       lcd1.setCursor(0,2);
       lcd1.print(size);
       lcd1.print(" Of ");
-      lcd1.setCursor(0,3);
+      lcd1.setCursor(5,3);
       lcd1.print(name);
-      
-      delay(5000);
+      delay(1000);
       lcd1.clear();
       lcd1.setCursor(0,0);
       lcd1.print("Your Order Number");
@@ -210,7 +211,7 @@ bool processInput(char option1, char option2, char option3) {
 
       lcd1.setCursor(0,3);
       lcd1.print("Next Customer Plz!");
-      delay(5000);
+      delay(10000);
     }
     state = (state == WAIT_FOR_INPUT_MENU2) ? DISPLAY_MENU2 : DISPLAY_MENU1;
 
