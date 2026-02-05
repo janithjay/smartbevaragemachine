@@ -62,7 +62,7 @@ For ESP8266 support:
 1. Go to **File → Preferences**
 2. Add this URL to "Additional Board Manager URLs": 
    ```
-   http://arduino.esp8266.com/stable/package_esp8266com_index.json
+   https://arduino.esp8266.com/stable/package_esp8266com_index.json
    ```
 3. Go to **Tools → Board → Boards Manager**
 4. Search for "ESP8266" and install the package
@@ -114,11 +114,12 @@ Connect the TX pin of Sender Uno to RX pin of Receiver Uno and connect GND of bo
 
 #### Sender Setup (Access Point)
 1. Open `Sender_ESP/Sender_ESP.ino` in Arduino IDE
-2. Configure WiFi credentials:
+2. Configure WiFi credentials (modify these with your own secure values):
    ```cpp
-   const char* ssid = "Flavor_Flow";
-   const char* password = "flavorflow123";
+   const char* ssid = "Flavor_Flow";     // Change to your preferred network name
+   const char* password = "flavorflow123"; // Change to a strong password
    ```
+   **Note**: Use a strong, unique password for your WiFi access point.
 3. Connect the NodeMCU ESP8266 to your computer via USB
 4. Select **Tools → Board → NodeMCU 1.0 (ESP-12E Module)**
 5. Select the correct COM port under **Tools → Port**
@@ -126,11 +127,11 @@ Connect the TX pin of Sender Uno to RX pin of Receiver Uno and connect GND of bo
 
 #### Receiver Setup (WiFi Client)
 1. Open `Receiver_ESP/Receiver_ESP.ino` in Arduino IDE
-2. Ensure WiFi credentials match the sender:
+2. Ensure WiFi credentials match the sender (use the same values you set in the sender):
    ```cpp
-   const char* ssid = "Flavor_Flow";
-   const char* password = "flavorflow123";
-   const char* serverAddress = "192.168.4.1";
+   const char* ssid = "Flavor_Flow";           // Must match sender SSID
+   const char* password = "flavorflow123";     // Must match sender password
+   const char* serverAddress = "192.168.4.1";  // Default AP IP address
    ```
 3. Connect the second NodeMCU ESP8266 to your computer via USB
 4. Select **Tools → Board → NodeMCU 1.0 (ESP-12E Module)**
@@ -248,6 +249,7 @@ Update in both `Sender_ESP.ino` and `Receiver_ESP.ino`:
 const char* ssid = "YourNetworkName";
 const char* password = "YourPassword";
 ```
+**Security Note**: Never commit your actual WiFi credentials to public repositories. Consider using a separate configuration file that is excluded from version control (add to `.gitignore`).
 
 ## License
 
