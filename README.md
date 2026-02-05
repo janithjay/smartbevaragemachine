@@ -1,6 +1,6 @@
 # Smart Beverage Machine
 
-A smart beverage dispensing system that allows customers to place orders via a keypad interface and receive their drinks through an automated dispensing mechanism. The system uses Arduino microcontrollers and ESP8266 WiFi modules for communication between the ordering station and the dispensing station.
+A smart beverage dispensing system that allows customers to place orders from cashier and receive their drinks through an automated dispensing mechanism. The system uses Arduino microcontrollers and ESP8266 WiFi modules for communication between the ordering station and the dispensing station.
 
 ## Features
 
@@ -25,7 +25,7 @@ A smart beverage dispensing system that allows customers to place orders via a k
 
 ## Hardware Requirements
 
-### Sender (Ordering Station)
+### Cashier machine Prototype (Ordering Station)
 - 1x Arduino Uno OR 1x NodeMCU ESP8266
 - 1x I2C LCD Display (20x4 for Uno, 16x2 for ESP)
 - 1x 4x4 Matrix Keypad
