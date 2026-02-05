@@ -62,21 +62,22 @@ For ESP8266 support:
 1. Go to **File → Preferences**
 2. Add this URL to "Additional Board Manager URLs": 
    ```
-   https://arduino.esp8266.com/stable/package_esp8266com_index.json
+   http://arduino.esp8266.com/stable/package_esp8266com_index.json
    ```
+   **Note**: The ESP8266 board package uses HTTP for the stable package index.
 3. Go to **Tools → Board → Boards Manager**
 4. Search for "ESP8266" and install the package
 
 ## Pin Configuration
 
 ### Sender_Uno (Arduino Uno)
-- **LCD (I2C)**: SDA (A4), SCL (A5)
+- **LCD (I2C)**: SDA (A4), SCL (A5) - analog pins on Arduino Uno
 - **Keypad**:
   - Row Pins: D2, D3, D4, D5
   - Column Pins: D6, D7, D8, D9
 
 ### Receiver_Uno (Arduino Uno)
-- **LCD (I2C)**: SDA (A4), SCL (A5)
+- **LCD (I2C)**: SDA (A4), SCL (A5) - analog pins on Arduino Uno
 - **Keypad**:
   - Row Pins: D2, D3, D4, D5
   - Column Pins: D6, D7, D8, D9
